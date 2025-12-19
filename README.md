@@ -37,9 +37,6 @@ src/main/java/com/example/demo/
 └── model        # Data Entities/Models
 
 
-
----
-
 ## ⚙️ Configuration
 
 Update the database configuration in `application.properties`:
