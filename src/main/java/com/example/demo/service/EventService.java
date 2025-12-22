@@ -45,22 +45,20 @@ public class EventService {
         });
     }
 
-
     public Page<Event> getEventsPaginated(int page, int size) {
-        
+
         Pageable pageable = PageRequest.of(page, size);
-       
+
         return repository.findAll(pageable);
     }
 
     public List<Event> getEventsSorted(String sortBy, String direction) {
-       
+
         Sort.Direction sortDirection = Sort.Direction.ASC;
         if (direction != null && direction.equalsIgnoreCase("desc")) {
             sortDirection = Sort.Direction.DESC;
         }
 
-    
         String validatedSortBy = sortBy;
         if (sortBy == null || (!sortBy.equals("name") && !sortBy.equals("date") && !sortBy.equals("location"))) {
             validatedSortBy = "name";
@@ -68,6 +66,24 @@ public class EventService {
 
         Sort sort = Sort.by(sortDirection, validatedSortBy);
         return repository.findAll(sort);
+    }
+
+    public Page<Event> getEventsPaginatedAndSorted(int page, int size, String sortBy, String direction) {
+        // Determine sort direction
+        Sort.Direction sortDirection = Sort.Direction.ASC;
+        if (direction != null && direction.equalsIgnoreCase("desc")) {
+            sortDirection = Sort.Direction.DESC;
+        }
+
+        // Validate sortBy field
+        String validatedSortBy = sortBy;
+        if (sortBy == null || (!sortBy.equals("name") && !sortBy.equals("date") && !sortBy.equals("location"))) {
+            validatedSortBy = "name";
+        }
+
+        // Create Pageable with sorting
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, validatedSortBy));
+        return repository.findAll(pageable);
     }
 
 }
